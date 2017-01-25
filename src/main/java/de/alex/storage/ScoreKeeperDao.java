@@ -1,15 +1,20 @@
 package de.alex.storage;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.amazon.speech.speechlet.Session;
 
 /**
  * Contains the methods to interact with the persistence layer for ScoreKeeper in DynamoDB.
  */
+@Component
 public class ScoreKeeperDao {
-    private final ScoreKeeperDynamoDbClient dynamoDbClient;
-
-    public ScoreKeeperDao(ScoreKeeperDynamoDbClient dynamoDbClient) {
-        this.dynamoDbClient = dynamoDbClient;
+	
+	@Autowired
+	private ScoreKeeperRepository repository;
+	
+    public ScoreKeeperDao() {
     }
 
     /**
@@ -21,10 +26,8 @@ public class ScoreKeeperDao {
      * @return
      */
     public ScoreKeeperGame getScoreKeeperGame(Session session) {
-        ScoreKeeperUserDataItem item = new ScoreKeeperUserDataItem();
-        item.setCustomerId(session.getUser().getUserId());
 
-        item = dynamoDbClient.loadItem(item);
+        ScoreKeeperUserDataItem item = repository.findOne(session.getUser().getUserId());
 
         if (item == null) {
             return null;
@@ -43,6 +46,6 @@ public class ScoreKeeperDao {
         item.setCustomerId(game.getSession().getUser().getUserId());
         item.setGameData(game.getGameData());
 
-        dynamoDbClient.saveItem(item);
+        repository.save(item);
     }
 }

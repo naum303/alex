@@ -9,9 +9,12 @@
  */
 package de.alex;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Contains session scoped settings.
  */
+@Component
 public class SkillContext {
     private boolean needsMoreHelp = true;
 

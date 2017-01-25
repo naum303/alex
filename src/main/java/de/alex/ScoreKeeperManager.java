@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.LaunchRequest;
 import com.amazon.speech.speechlet.Session;
@@ -23,7 +26,6 @@ import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
 
 import de.alex.storage.ScoreKeeperDao;
-import de.alex.storage.ScoreKeeperDynamoDbClient;
 import de.alex.storage.ScoreKeeperGame;
 import de.alex.storage.ScoreKeeperGameData;
 
@@ -31,6 +33,7 @@ import de.alex.storage.ScoreKeeperGameData;
  * The {@link ScoreKeeperManager} receives various events and intents and manages the flow of the
  * game.
  */
+@Component
 public class ScoreKeeperManager {
     /**
      * Intent slot for player name.
@@ -47,13 +50,8 @@ public class ScoreKeeperManager {
      */
     private static final int MAX_PLAYERS_FOR_SPEECH = 3;
 
-    private final ScoreKeeperDao scoreKeeperDao;
-
-    public ScoreKeeperManager(/*final AmazonDynamoDBClient amazonDynamoDbClient*/) {
-        ScoreKeeperDynamoDbClient dynamoDbClient =
-                new ScoreKeeperDynamoDbClient();//amazonDynamoDbClient);
-        scoreKeeperDao = new ScoreKeeperDao(dynamoDbClient);
-    }
+    @Autowired
+    private ScoreKeeperDao scoreKeeperDao;
 
     /**
      * Creates and returns response for Launch request.

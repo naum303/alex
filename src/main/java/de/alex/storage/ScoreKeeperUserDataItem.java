@@ -1,20 +1,20 @@
 package de.alex.storage;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Model representing an item of the ScoreKeeperUserData table in DynamoDB for the ScoreKeeper
  * skill.
  */
-//@DynamoDBTable(tableName = "ScoreKeeperUserData")
+@Entity
 public class ScoreKeeperUserDataItem {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    
+    @Id
     private String customerId;
 
     private ScoreKeeperGameData gameData;
 
-//    @DynamoDBHashKey(attributeName = "CustomerId")
     public String getCustomerId() {
         return customerId;
     }
@@ -23,8 +23,6 @@ public class ScoreKeeperUserDataItem {
         this.customerId = customerId;
     }
 
-//    @DynamoDBAttribute(attributeName = "Data")
-//    @DynamoDBMarshalling(marshallerClass = ScoreKeeperGameDataMarshaller.class)
     public ScoreKeeperGameData getGameData() {
         return gameData;
     }
@@ -32,31 +30,4 @@ public class ScoreKeeperUserDataItem {
     public void setGameData(ScoreKeeperGameData gameData) {
         this.gameData = gameData;
     }
-
-//    /**
-//     * A {@link DynamoDBMarshaller} that provides marshalling and unmarshalling logic for
-//     * {@link ScoreKeeperGameData} values so that they can be persisted in the database as String.
-//     */
-//    public static class ScoreKeeperGameDataMarshaller implements
-//            DynamoDBMarshaller<ScoreKeeperGameData> {
-//
-//        @Override
-//        public String marshall(ScoreKeeperGameData gameData) {
-//            try {
-//                return OBJECT_MAPPER.writeValueAsString(gameData);
-//            } catch (JsonProcessingException e) {
-//                throw new IllegalStateException("Unable to marshall game data", e);
-//            }
-//        }
-//
-//        @Override
-//        public ScoreKeeperGameData unmarshall(Class<ScoreKeeperGameData> clazz, String value) {
-//            try {
-//                return OBJECT_MAPPER.readValue(value, new TypeReference<ScoreKeeperGameData>() {
-//                });
-//            } catch (Exception e) {
-//                throw new IllegalStateException("Unable to unmarshall game data value", e);
-//            }
-//        }
-//    }
 }
