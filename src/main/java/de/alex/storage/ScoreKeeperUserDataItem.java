@@ -2,6 +2,7 @@ package de.alex.storage;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * Model representing an item of the ScoreKeeperUserData table in DynamoDB for the ScoreKeeper
@@ -13,6 +14,7 @@ public class ScoreKeeperUserDataItem {
     @Id
     private String customerId;
 
+    @OneToOne
     private ScoreKeeperGameData gameData;
 
     public String getCustomerId() {
