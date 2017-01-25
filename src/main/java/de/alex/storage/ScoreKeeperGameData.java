@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Entity;
+
 /**
  * Contains player and score data to represent a score keeper game.
  */
+@Entity
 public class ScoreKeeperGameData {
     private List<String> players;
     private Map<String, Long> scores;
