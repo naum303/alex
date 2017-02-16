@@ -11,8 +11,8 @@ import com.amazon.speech.speechlet.Session;
 @Component
 public class ScoreKeeperDao {
 	
-	@Autowired
-	private ScoreKeeperRepository repository;
+//	@Autowired
+//	private ScoreKeeperRepository repository;
 	
     public ScoreKeeperDao() {
     }
@@ -27,13 +27,15 @@ public class ScoreKeeperDao {
      */
     public ScoreKeeperGame getScoreKeeperGame(Session session) {
 
-        ScoreKeeperUserDataItem item = repository.findOne(session.getUser().getUserId());
+//        ScoreKeeperUserDataItem item = repository.findOne(session.getUser().getUserId());
 
-        if (item == null) {
-            return null;
-        }
-
-        return ScoreKeeperGame.newInstance(session, item.getGameData());
+//        if (item == null) {
+//            return null;
+//        }
+//
+//        return ScoreKeeperGame.newInstance(session, item.getGameData());
+    	
+    	/* TODO: */ return null;
     }
 
     /**
@@ -42,10 +44,10 @@ public class ScoreKeeperDao {
      * @param game
      */
     public void saveScoreKeeperGame(ScoreKeeperGame game) {
-        ScoreKeeperUserDataItem item = new ScoreKeeperUserDataItem();
-        item.setCustomerId(game.getSession().getUser().getUserId());
-        item.setGameData(game.getGameData());
-
-        repository.save(item);
+//        ScoreKeeperUserDataItem item = new ScoreKeeperUserDataItem();
+//        item.setCustomerId(game.getSession().getUser().getUserId());
+//        item.setGameData(game.getGameData());
+//
+//        repository.save(item);
     }
 }

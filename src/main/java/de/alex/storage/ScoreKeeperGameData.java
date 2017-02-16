@@ -5,24 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 /**
  * Contains player and score data to represent a score keeper game.
  */
-@Entity
 public class ScoreKeeperGameData {
 
-	@Id
-	@GeneratedValue
 	private long id;
 
-	@ElementCollection
 	private List<String> players;
-	@ElementCollection
 	private Map<String, Long> scores;
 
 	/**
