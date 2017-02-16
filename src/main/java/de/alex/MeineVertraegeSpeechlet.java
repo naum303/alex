@@ -108,6 +108,17 @@ public class MeineVertraegeSpeechlet implements Speechlet {
                 session.getSessionId());
         
         Intent intent = request.getIntent();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if ("NewGameIntent".equals(intent.getName())) {
             return scoreKeeperManager.getNewGameIntentResponse(session, skillContext);
 
