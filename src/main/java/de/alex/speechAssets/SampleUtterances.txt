@@ -1,3 +1,5 @@
+KostenIntent wie viel muss ich bezahlen
+
 AlleVertraegeIntent alles
 AlleVertraegeIntent alle Vertraege
 AlleVertraegeIntent gib Vertraege

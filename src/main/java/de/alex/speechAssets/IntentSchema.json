@@ -1,7 +1,10 @@
 {
 	"intents": [{
 		"intent": "AlleVertraegeIntent"
-		},
+	},
+	{
+		"intent": "KostenIntent"
+	},
 	{
 		"intent": "VertraegeZuSparteIntent",
 		"slots": [{

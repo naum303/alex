@@ -116,6 +116,8 @@ public class MeineVertraegeSpeechlet implements Speechlet {
 		if ("AlleVertraegeIntent".equals(intent.getName())) {
 			return meineVertraegeManager.getAlleVertraegeResponse(intent, session, skillContext);
 
+		} else if("KostenIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getKostenResponse(intent, session, skillContext);
 		} else if ("VertraegeZuSparteIntent".equals(intent.getName())) {
 			return meineVertraegeManager.getVertraegeZuSparteResponse(intent, session, skillContext);
 

@@ -9,6 +9,7 @@
  */
 package de.alex;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,33 @@ public class MeineVertraegeManager {
 		String repromptText = "";
 
 		return getAskSpeechletResponse(speechText, repromptText);
+	}
+
+	public SpeechletResponse getKostenResponse(Intent intent, Session session, SkillContext skillContext) {
+
+		BigDecimal summe = BigDecimal.ZERO;
+
+		List<Vertrag> vertraege = repository.getVertraege();
+		for (Vertrag vertrag : vertraege) {
+			switch (vertrag.getZahlungsweise()) {
+			case JAEHRLICH:
+				summe = summe.add(vertrag.getBeitrag());
+				break;
+			case MONATLICH:
+				summe = summe.add(vertrag.getBeitrag().multiply(BigDecimal.valueOf(12)));
+				break;
+			case QUARTAL:
+				summe = summe.add(vertrag.getBeitrag().multiply(BigDecimal.valueOf(4)));
+				break;
+			}
+		}
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		int euro = (int) summe.doubleValue();
+		int cent = (int) (summe.doubleValue()*10);
+		cent -= euro*10;
+		speech.setText("Du musst dieses Jahr insgesamt " + euro + " Euro und " + cent + " Cent für deine Versicherungen bezahlen.");
+		
+		return SpeechletResponse.newTellResponse(speech);
 	}
 
 	public SpeechletResponse getAlleVertraegeResponse(Intent intent, Session session, SkillContext skillContext) {
@@ -111,7 +139,8 @@ public class MeineVertraegeManager {
 
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
-		builder.append("Du hast " + vertraege.size() + " " + sparte.getSpeech() + (vertraege.size() > 1 ? " Verträge." : " Vertrag."));
+		builder.append("Du hast " + vertraege.size() + " " + sparte.getSpeech()
+				+ (vertraege.size() > 1 ? " Verträge." : " Vertrag."));
 
 		speech.setText(builder.toString());
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
@@ -126,10 +155,7 @@ public class MeineVertraegeManager {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("Zu der VSNR ")
-				.append(vsnr)
-				.append(" gehört ein ")
-				.append(vertrag.getSparte().getSpeech())
+		builder.append("Zu der VSNR ").append(vsnr).append(" gehört ein ").append(vertrag.getSparte().getSpeech())
 				.append("-Vertrag.");
 
 		speech.setText(builder.toString());
@@ -147,11 +173,10 @@ public class MeineVertraegeManager {
 	 *            {@link SkillContext} for this request
 	 * @return response for the help intent
 	 */
-	public SpeechletResponse getHelpIntentResponse(Intent intent, Session session,
-			SkillContext skillContext) {
-		return skillContext.needsMoreHelp() ? getAskSpeechletResponse(
-				MeineVertraegeTextUtil.COMPLETE_HELP + " So, how can I help?",
-				MeineVertraegeTextUtil.NEXT_HELP)
+	public SpeechletResponse getHelpIntentResponse(Intent intent, Session session, SkillContext skillContext) {
+		return skillContext.needsMoreHelp()
+				? getAskSpeechletResponse(MeineVertraegeTextUtil.COMPLETE_HELP + " So, how can I help?",
+						MeineVertraegeTextUtil.NEXT_HELP)
 				: getTellSpeechletResponse(MeineVertraegeTextUtil.COMPLETE_HELP);
 	}
 
@@ -166,10 +191,10 @@ public class MeineVertraegeManager {
 	 *            {@link SkillContext} for this request
 	 * @return response for the exit intent
 	 */
-	public SpeechletResponse getExitIntentResponse(Intent intent, Session session,
-			SkillContext skillContext) {
-		return skillContext.needsMoreHelp() ? getTellSpeechletResponse("Okay. Whenever you're "
-				+ "ready, you can start giving points to the players in your game.")
+	public SpeechletResponse getExitIntentResponse(Intent intent, Session session, SkillContext skillContext) {
+		return skillContext.needsMoreHelp()
+				? getTellSpeechletResponse(
+						"Okay. Whenever you're " + "ready, you can start giving points to the players in your game.")
 				: getTellSpeechletResponse("");
 	}
 
