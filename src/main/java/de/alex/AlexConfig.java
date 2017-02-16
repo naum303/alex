@@ -11,7 +11,7 @@ import com.amazon.speech.speechlet.servlet.SpeechletServlet;
 public class AlexConfig {
 
     @Autowired
-    private ScoreKeeperSpeechlet scoreKeeperSpeechlet;
+    private MeineVertraegeSpeechlet scoreKeeperSpeechlet;
 
     @Bean
     public ServletRegistrationBean registerServlet() {

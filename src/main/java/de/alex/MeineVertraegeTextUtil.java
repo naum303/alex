@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * Util containing various text related utils.
  */
-public final class ScoreKeeperTextUtil {
+public final class MeineVertraegeTextUtil {
 
-    private ScoreKeeperTextUtil() {
+    private MeineVertraegeTextUtil() {
     }
 
     /**

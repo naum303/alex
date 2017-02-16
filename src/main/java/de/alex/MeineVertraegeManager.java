@@ -30,11 +30,11 @@ import de.alex.storage.ScoreKeeperGame;
 import de.alex.storage.ScoreKeeperGameData;
 
 /**
- * The {@link ScoreKeeperManager} receives various events and intents and manages the flow of the
+ * The {@link MeineVertraegeManager} receives various events and intents and manages the flow of the
  * game.
  */
 @Component
-public class ScoreKeeperManager {
+public class MeineVertraegeManager {
     /**
      * Intent slot for player name.
      */
@@ -77,10 +77,10 @@ public class ScoreKeeperManager {
                             + (game.getNumberOfPlayers() == 1 ? " player" : " players")
                             + " in the game. You can give a player points, add another player,"
                             + " reset all players or exit. Which would you like?";
-            repromptText = ScoreKeeperTextUtil.COMPLETE_HELP;
+            repromptText = MeineVertraegeTextUtil.COMPLETE_HELP;
         } else {
             speechText = "ScoreKeeper, What can I do for you?";
-            repromptText = ScoreKeeperTextUtil.NEXT_HELP;
+            repromptText = MeineVertraegeTextUtil.NEXT_HELP;
         }
 
         return getAskSpeechletResponse(speechText, repromptText);
@@ -138,7 +138,7 @@ public class ScoreKeeperManager {
         // terminate or continue the conversation based on whether the intent
         // is from a one shot command or not.
         String newPlayerName =
-                ScoreKeeperTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
+                MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
         if (newPlayerName == null) {
             String speechText = "OK. Who do you want to add?";
             return getAskSpeechletResponse(speechText, speechText);
@@ -165,7 +165,7 @@ public class ScoreKeeperManager {
             } else {
                 speechText += "Who is your next player?";
             }
-            repromptText = ScoreKeeperTextUtil.NEXT_HELP;
+            repromptText = MeineVertraegeTextUtil.NEXT_HELP;
         }
 
         if (repromptText != null) {
@@ -189,7 +189,7 @@ public class ScoreKeeperManager {
     public SpeechletResponse getAddScoreIntentResponse(Intent intent, Session session,
             SkillContext skillContext) {
         String playerName =
-                ScoreKeeperTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
+                MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
         if (playerName == null) {
             String speechText = "Sorry, I did not hear the player name. Please say again?";
             return getAskSpeechletResponse(speechText, speechText);
@@ -295,9 +295,9 @@ public class ScoreKeeperManager {
     public SpeechletResponse getHelpIntentResponse(Intent intent, Session session,
             SkillContext skillContext) {
         return skillContext.needsMoreHelp() ? getAskSpeechletResponse(
-                ScoreKeeperTextUtil.COMPLETE_HELP + " So, how can I help?",
-                ScoreKeeperTextUtil.NEXT_HELP)
-                : getTellSpeechletResponse(ScoreKeeperTextUtil.COMPLETE_HELP);
+                MeineVertraegeTextUtil.COMPLETE_HELP + " So, how can I help?",
+                MeineVertraegeTextUtil.NEXT_HELP)
+                : getTellSpeechletResponse(MeineVertraegeTextUtil.COMPLETE_HELP);
     }
 
     /**

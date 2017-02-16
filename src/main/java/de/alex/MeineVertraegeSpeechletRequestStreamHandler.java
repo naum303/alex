@@ -21,7 +21,7 @@ import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler;
  * build this project using the {@code lambda-compile} Ant task and upload the resulting zip file to
  * power your function.
  */
-public final class ScoreKeeperSpeechletRequestStreamHandler extends SpeechletRequestStreamHandler {
+public final class MeineVertraegeSpeechletRequestStreamHandler extends SpeechletRequestStreamHandler {
     private static final Set<String> supportedApplicationIds;
 
     static {
@@ -33,7 +33,7 @@ public final class ScoreKeeperSpeechletRequestStreamHandler extends SpeechletReq
         // supportedApplicationIds.add("amzn1.echo-sdk-ams.app.[unique-value-here]");
     }
 
-    public ScoreKeeperSpeechletRequestStreamHandler() {
-        super(new ScoreKeeperSpeechlet(), supportedApplicationIds);
+    public MeineVertraegeSpeechletRequestStreamHandler() {
+        super(new MeineVertraegeSpeechlet(), supportedApplicationIds);
     }
 }

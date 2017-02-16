@@ -69,13 +69,13 @@ import com.amazon.speech.speechlet.SpeechletResponse;
  * Alexa: "Jeff has zero points and Bob has three"
  */
 @Service
-public class ScoreKeeperSpeechlet implements Speechlet {
-    private static final Logger log = LoggerFactory.getLogger(ScoreKeeperSpeechlet.class);
+public class MeineVertraegeSpeechlet implements Speechlet {
+    private static final Logger log = LoggerFactory.getLogger(MeineVertraegeSpeechlet.class);
 
 //    private AmazonDynamoDBClient amazonDynamoDBClient;
 
     @Autowired
-    private ScoreKeeperManager scoreKeeperManager;
+    private MeineVertraegeManager scoreKeeperManager;
 
     @Autowired
     private SkillContext skillContext;
