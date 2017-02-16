@@ -1,6 +1,7 @@
 package de.alex;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.677.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(35.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
+		vertrag.setVersicherungsbeginn(LocalDate.of(2005, 05, 01));
 		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
@@ -30,6 +32,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.677.123");
 		vertrag.setBeitrag(BigDecimal.valueOf(12.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
+		vertrag.setVersicherungsbeginn(LocalDate.of(2008, 03, 01));
 		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
@@ -38,6 +41,7 @@ public class VertragRepository {
 		vertrag.setVsnr("79.116.975.12");
 		vertrag.setBeitrag(BigDecimal.valueOf(25.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
+		vertrag.setVersicherungsbeginn(LocalDate.of(2005, 04, 01));
 		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
@@ -46,6 +50,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.123.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(150.20));
 		vertrag.setZahlungsweise(Zahlungsweise.QUARTAL);
+		vertrag.setVersicherungsbeginn(LocalDate.of(2001, 02, 01));
 		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
@@ -54,6 +59,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.321.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(89.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
+		vertrag.setVersicherungsbeginn(LocalDate.of(2016, 01, 01));
 		vertraege.add(vertrag);
 	}
 

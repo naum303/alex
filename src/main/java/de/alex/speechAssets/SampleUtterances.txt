@@ -17,6 +17,8 @@ AlleVertraegeIntent allen Verträgen
 AlleVertraegeIntent allen meinen Verträgen
 AlleVertraegeIntent Verträgen
 AlleVertraegeIntent Vertrag
+AlleVertraegeIntent nach meinen Vertraegen
+AlleVertraegeIntent nach Verträgen
 
 VertraegeZuSparteIntent alle Vertraege zur Sparte {Sparte}
 VertraegeZuSparteIntent alle {Sparte} Vertraege

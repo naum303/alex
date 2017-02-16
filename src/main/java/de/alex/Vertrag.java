@@ -1,6 +1,7 @@
 package de.alex;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import de.alex.types.Sparte;
 import de.alex.types.Zahlungsweise;
@@ -11,6 +12,7 @@ public class Vertrag {
 	private BigDecimal beitrag;
 	private String vsnr;
 	private Zahlungsweise zahlungsweise;
+	private LocalDate versicherungsbeginn;
 	
 	public Zahlungsweise getZahlungsweise() {
 		return zahlungsweise;
@@ -41,5 +43,11 @@ public class Vertrag {
 	}
 	public void setVsnr(String vsnr) {
 		this.vsnr = vsnr;
+	}
+	public LocalDate getVersicherungsbeginn() {
+		return versicherungsbeginn;
+	}
+	public void setVersicherungsbeginn(LocalDate versicherungsbeginn) {
+		this.versicherungsbeginn = versicherungsbeginn;
 	}
 }

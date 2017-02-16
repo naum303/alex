@@ -15,5 +15,12 @@
 			"name": "VSNR",
 			"type": "AMAZON.NUMBER"
 		}]
+	},
+	{
+		"intent": "VertraegeZuVersicherungsbeginn",
+		"slots": [{
+			"name": "Datum",
+			"type": "AMAZON.DATE"
+		}]
 	}]
 }
