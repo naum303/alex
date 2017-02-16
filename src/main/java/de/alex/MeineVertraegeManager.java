@@ -52,6 +52,9 @@ public class MeineVertraegeManager {
 
     @Autowired
     private ScoreKeeperDao scoreKeeperDao;
+    
+    @Autowired
+    private VertragRepository repository;
 
     /**
      * Creates and returns response for Launch request.

@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class VertragRepository {
 	
 	private List<Vertrag> vertraege = new ArrayList<>();
@@ -43,5 +46,21 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.321.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(89.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
+	}
+	
+	public Vertrag getVertrag(Long vsnr) {
+		for(Vertrag vertrag : vertraege) {
+			String vertragVsnr = vertrag.getVsnr();
+			vertragVsnr = vertragVsnr.replace(".", "");
+			Long longVsnr = Long.valueOf(vertragVsnr);
+			if(longVsnr.equals(vsnr)) {
+				return vertrag;
+			}
+		}
+		return null;
+	}
+	
+	public List<Vertrag> getVertraege() {
+		return vertraege;
 	}
 }
