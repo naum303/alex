@@ -30,7 +30,8 @@ import de.alex.types.Sparte;
  */
 @Component
 public class MeineVertraegeManager {
-
+@Autowired
+private ResponseCardService cardService;
 
 	@Autowired
 	private VertragRepository repository;
@@ -72,7 +73,7 @@ public class MeineVertraegeManager {
 		}
 		
 		speech.setText(builder.toString());
-		return SpeechletResponse.newTellResponse(speech);
+		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
 	public SpeechletResponse getVertraegeZuSparteResponse(Session session, SkillContext skillContext) {
