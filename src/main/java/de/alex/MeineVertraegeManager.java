@@ -22,6 +22,8 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
 
+import de.alex.types.Sparte;
+
 /**
  * The {@link MeineVertraegeManager} receives various events and intents and
  * manages the flow of the game.
@@ -56,8 +58,16 @@ public class MeineVertraegeManager {
 		List<Vertrag> vertraege = repository.getVertraege();
 		
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("Du hast " + vertraege.size() + " Vertraege.");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Du hast " + vertraege.size() + " Verträge.");
 		
+		
+		for(Sparte sparte : Sparte.values()) {
+			List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
+			builder.append(" Davon sind " + vertraegeZurSparte.size() + " Verträge " + sparte.getSpeech() + " Verträge.");
+		}
+		
+		speech.setText(builder.toString());
 		return SpeechletResponse.newTellResponse(speech);
 	}
 
