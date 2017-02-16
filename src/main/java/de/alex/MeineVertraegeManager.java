@@ -9,7 +9,11 @@
  */
 package de.alex;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,13 +64,37 @@ public class MeineVertraegeManager {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
 		builder.append("Du hast " + vertraege.size() + " Verträge.");
-
-		for (Sparte sparte : Sparte.values()) {
-			List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
-			if (vertraegeZurSparte.size() == 1) {
-				builder.append(" Davon ist einer ein " + sparte.getSpeech() + " Vertrag.");
-			} else if (vertraegeZurSparte.size() > 1) {
-				builder.append(" Davon sind " + vertraegeZurSparte.size() + " " + sparte.getSpeech() + " Verträge.");
+		
+		Map<Sparte, Integer> anzahlVertraegeZuSparte = new HashMap<>();
+		
+		if(vertraege.size() > 0) {
+			for(Sparte sparte : Sparte.values()) {
+				List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
+				if(vertraegeZurSparte.size() > 0) {
+					anzahlVertraegeZuSparte.put(sparte, vertraegeZurSparte.size());
+				}
+			}
+		}
+		
+		if(anzahlVertraegeZuSparte.size() > 1) {
+			List<String> aussagen = new ArrayList<>();
+			for(Entry<Sparte, Integer> entry : anzahlVertraegeZuSparte.entrySet()) {
+				if(entry.getValue() == 1) {
+					aussagen.add(" ein " + entry.getKey().getSpeech() + " Vertrag");
+				} else {
+					aussagen.add(entry.getValue() + " " + entry.getKey().getSpeech() + " Verträge");
+				}
+			}
+			if(aussagen.size() == 1) {
+				builder.append(" Mach ich später.");
+			} else {
+				for(int i=0;i<aussagen.size()-1;i++) {
+					builder.append(" Davon sind ");
+					builder.append(aussagen.get(i));
+					builder.append(", ");
+				}
+				builder.append(" und ");
+				builder.append(aussagen.get(aussagen.size() - 1));
 			}
 		}
 
