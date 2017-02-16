@@ -9,9 +9,7 @@
  */
 package de.alex;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,14 +18,9 @@ import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.LaunchRequest;
 import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.Card;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
-
-import de.alex.storage.ScoreKeeperDao;
-import de.alex.storage.ScoreKeeperGame;
-import de.alex.storage.ScoreKeeperGameData;
 
 /**
  * The {@link MeineVertraegeManager} receives various events and intents and
@@ -60,6 +53,13 @@ public class MeineVertraegeManager {
 	}
 
 	public SpeechletResponse getAlleVertraegeResponse(Session session, SkillContext skillContext) {
+		List<Vertrag> vertraege = repository.getVertraege();
+		
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		speech.setText("Du hast " + vertraege.size() + " Vertraege.");
+		
+		SpeechletResponse.newTellResponse(speech);
+		
 		return null;
 	}
 
