@@ -18,13 +18,13 @@ public class ResponseCardService {
 		return card;
 	}
 
-
 	private void appendVertrag(Vertrag v, StringBuffer buffer) {
-		buffer.append("\nSparte: " + v.getSparte());
+		buffer.append("\nSparte: " + v.getSparte().getSpeech());
 		buffer.append("\nVersichert: " + v.getVersichertesObjekt());
-		buffer.append("\nBeitrag: " + v.getBeitrag());
+		buffer.append("\nBeitrag: " + v.getBeitrag()+"€");
 		buffer.append("\nZahlungsweise: " + v.getZahlungsweise());
 	}
+	
 	public SimpleCard getCardbyListe(List<Vertrag> list) {
 		SimpleCard card = new SimpleCard();
 		card.setTitle("Informationen zur Sparte");
