@@ -25,17 +25,20 @@ import com.amazon.speech.speechlet.SpeechletException;
 import com.amazon.speech.speechlet.SpeechletResponse;
 
 /**
- * This sample shows how to create a Lambda function for handling Alexa Skill requests that:
+ * This sample shows how to create a Lambda function for handling Alexa Skill
+ * requests that:
  *
  * <ul>
  * <li><b>Multiple slots</b>: has 2 slots (name and score)</li>
- * <li><b>Database Interaction</b>: demonstrates how to read and write data to DynamoDB.</li>
+ * <li><b>Database Interaction</b>: demonstrates how to read and write data to
+ * DynamoDB.</li>
  * <li><b>NUMBER slot</b>: demonstrates how to handle number slots.</li>
- * <li><b>Custom slot type</b>: demonstrates using custom slot types to handle a finite set of known values</li>
- * <li><b>Dialog and Session state</b>: Handles two models, both a one-shot ask and tell model, and
- * a multi-turn dialog model. If the user provides an incorrect slot in a one-shot model, it will
- * direct to the dialog model. See the examples section below for sample interactions of these
- * models.</li>
+ * <li><b>Custom slot type</b>: demonstrates using custom slot types to handle a
+ * finite set of known values</li>
+ * <li><b>Dialog and Session state</b>: Handles two models, both a one-shot ask
+ * and tell model, and a multi-turn dialog model. If the user provides an
+ * incorrect slot in a one-shot model, it will direct to the dialog model. See
+ * the examples section below for sample interactions of these models.</li>
  * </ul>
  * <p>
  * <h2>Examples</h2>
@@ -70,90 +73,90 @@ import com.amazon.speech.speechlet.SpeechletResponse;
  */
 @Service
 public class MeineVertraegeSpeechlet implements Speechlet {
-    private static final Logger log = LoggerFactory.getLogger(MeineVertraegeSpeechlet.class);
+	private static final Logger log = LoggerFactory.getLogger(MeineVertraegeSpeechlet.class);
 
-//    private AmazonDynamoDBClient amazonDynamoDBClient;
+	// private AmazonDynamoDBClient amazonDynamoDBClient;
 
-    @Autowired
-    private MeineVertraegeManager scoreKeeperManager;
+	@Autowired
+	private MeineVertraegeManager meineVertraegeManager;
 
-    @Autowired
-    private SkillContext skillContext;
+	@Autowired
+	private SkillContext skillContext;
 
-    @Override
-    public void onSessionStarted(final SessionStartedRequest request, final Session session)
-            throws SpeechletException {
-        log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
+	@Override
+	public void onSessionStarted(final SessionStartedRequest request, final Session session)
+			throws SpeechletException {
+		log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(),
+				session.getSessionId());
 
-        // if user said a one shot command that triggered an intent event,
-        // it will start a new session, and then we should avoid speaking too many words.
-        skillContext.setNeedsMoreHelp(false);
-    }
+		// if user said a one shot command that triggered an intent event,
+		// it will start a new session, and then we should avoid speaking too
+		// many words.
+		skillContext.setNeedsMoreHelp(false);
+	}
 
-    @Override
-    public SpeechletResponse onLaunch(final LaunchRequest request, final Session session)
-            throws SpeechletException {
-        log.info("onLaunch requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
+	@Override
+	public SpeechletResponse onLaunch(final LaunchRequest request, final Session session)
+			throws SpeechletException {
+		log.info("onLaunch requestId={}, sessionId={}", request.getRequestId(),
+				session.getSessionId());
 
-        skillContext.setNeedsMoreHelp(true);
-        return scoreKeeperManager.getLaunchResponse(request, session);
-    }
+		skillContext.setNeedsMoreHelp(true);
+		return meineVertraegeManager.getLaunchResponse(request, session);
+	}
 
-    @Override
-    public SpeechletResponse onIntent(IntentRequest request, Session session)
-            throws SpeechletException {
-        log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
-        
-        Intent intent = request.getIntent();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        if ("NewGameIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getNewGameIntentResponse(session, skillContext);
+	@Override
+	public SpeechletResponse onIntent(IntentRequest request, Session session)
+			throws SpeechletException {
+		log.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
+				session.getSessionId());
 
-        } else if ("AddPlayerIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getAddPlayerIntentResponse(intent, session, skillContext);
+		Intent intent = request.getIntent();
 
-        } else if ("AddScoreIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getAddScoreIntentResponse(intent, session, skillContext);
+		if ("AlleVertraegeIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getAlleVertraegeResponse(session, skillContext);
 
-        } else if ("TellScoresIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getTellScoresIntentResponse(intent, session);
+		} else if ("VertraegeZuSparteIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getVertraegeZuSparteResponse(session, skillContext);
 
-        } else if ("ResetPlayersIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getResetPlayersIntentResponse(intent, session);
+		} else if ("VertragZuVSNR".equals(intent.getName())) {
+			return meineVertraegeManager.getVertragZuVSNRResponse(session, skillContext);
 
-        } else if ("AMAZON.HelpIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getHelpIntentResponse(intent, session, skillContext);
+		} else if ("NewGameIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getNewGameIntentResponse(session, skillContext);
 
-        } else if ("AMAZON.CancelIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getExitIntentResponse(intent, session, skillContext);
+		} else if ("AddPlayerIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getAddPlayerIntentResponse(intent, session, skillContext);
 
-        } else if ("AMAZON.StopIntent".equals(intent.getName())) {
-            return scoreKeeperManager.getExitIntentResponse(intent, session, skillContext);
+		} else if ("AddScoreIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getAddScoreIntentResponse(intent, session, skillContext);
 
-        } else {
-            throw new IllegalArgumentException("Unrecognized intent: " + intent.getName());
-        }
-    }
+		} else if ("TellScoresIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getTellScoresIntentResponse(intent, session);
 
-    @Override
-    public void onSessionEnded(final SessionEndedRequest request, final Session session)
-            throws SpeechletException {
-        log.info("onSessionEnded requestId={}, sessionId={}", request.getRequestId(),
-                session.getSessionId());
-        // any cleanup logic goes here
-    }
+		} else if ("ResetPlayersIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getResetPlayersIntentResponse(intent, session);
+
+		} else if ("AMAZON.HelpIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getHelpIntentResponse(intent, session, skillContext);
+
+		} else if ("AMAZON.CancelIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getExitIntentResponse(intent, session, skillContext);
+
+		} else if ("AMAZON.StopIntent".equals(intent.getName())) {
+			return meineVertraegeManager.getExitIntentResponse(intent, session, skillContext);
+
+		} else {
+			throw new IllegalArgumentException("Unrecognized intent: " + intent.getName());
+		}
+	}
+
+	@Override
+	public void onSessionEnded(final SessionEndedRequest request, final Session session)
+			throws SpeechletException {
+		log.info("onSessionEnded requestId={}, sessionId={}", request.getRequestId(),
+				session.getSessionId());
+		// any cleanup logic goes here
+	}
 
 }

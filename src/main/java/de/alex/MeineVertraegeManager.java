@@ -30,399 +30,408 @@ import de.alex.storage.ScoreKeeperGame;
 import de.alex.storage.ScoreKeeperGameData;
 
 /**
- * The {@link MeineVertraegeManager} receives various events and intents and manages the flow of the
- * game.
+ * The {@link MeineVertraegeManager} receives various events and intents and
+ * manages the flow of the game.
  */
 @Component
 public class MeineVertraegeManager {
-    /**
-     * Intent slot for player name.
-     */
-    private static final String SLOT_PLAYER_NAME = "PlayerName";
+	/**
+	 * Intent slot for player name.
+	 */
+	private static final String SLOT_PLAYER_NAME = "PlayerName";
 
-    /**
-     * Intent slot for player score.
-     */
-    private static final String SLOT_SCORE_NUMBER = "ScoreNumber";
+	/**
+	 * Intent slot for player score.
+	 */
+	private static final String SLOT_SCORE_NUMBER = "ScoreNumber";
 
-    /**
-     * Maximum number of players for which scores must be announced while adding a score.
-     */
-    private static final int MAX_PLAYERS_FOR_SPEECH = 3;
+	/**
+	 * Maximum number of players for which scores must be announced while adding
+	 * a score.
+	 */
+	private static final int MAX_PLAYERS_FOR_SPEECH = 3;
 
-    @Autowired
-    private ScoreKeeperDao scoreKeeperDao;
-    
-    @Autowired
-    private VertragRepository repository;
+	@Autowired
+	private ScoreKeeperDao scoreKeeperDao;
 
-    /**
-     * Creates and returns response for Launch request.
-     *
-     * @param request
-     *            {@link LaunchRequest} for this request
-     * @param session
-     *            Speechlet {@link Session} for this request
-     * @return response for launch request
-     */
-    public SpeechletResponse getLaunchResponse(LaunchRequest request, Session session) {
-        // Speak welcome message and ask user questions
-        // based on whether there are players or not.
-        String speechText, repromptText;
-        ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
+	@Autowired
+	private VertragRepository repository;
 
-        if (game == null || !game.hasPlayers()) {
-            speechText = "ScoreKeeper, Let's start your game. Who's your first player?";
-            repromptText = "Please tell me who is your first player?";
-        } else if (!game.hasScores()) {
-            speechText =
-                    "ScoreKeeper, you have " + game.getNumberOfPlayers()
-                            + (game.getNumberOfPlayers() == 1 ? " player" : " players")
-                            + " in the game. You can give a player points, add another player,"
-                            + " reset all players or exit. Which would you like?";
-            repromptText = MeineVertraegeTextUtil.COMPLETE_HELP;
-        } else {
-            speechText = "ScoreKeeper, What can I do for you?";
-            repromptText = MeineVertraegeTextUtil.NEXT_HELP;
-        }
+	/**
+	 * Creates and returns response for Launch request.
+	 *
+	 * @param request
+	 *            {@link LaunchRequest} for this request
+	 * @param session
+	 *            Speechlet {@link Session} for this request
+	 * @return response for launch request
+	 */
+	public SpeechletResponse getLaunchResponse(LaunchRequest request, Session session) {
+		// Speak welcome message and ask user questions
+		// based on whether there are players or not.
+		String speechText, repromptText;
+		ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
 
-        return getAskSpeechletResponse(speechText, repromptText);
-    }
+		if (game == null || !game.hasPlayers()) {
+			speechText = "ScoreKeeper, Let's start your game. Who's your first player?";
+			repromptText = "Please tell me who is your first player?";
+		} else if (!game.hasScores()) {
+			speechText = "ScoreKeeper, you have " + game.getNumberOfPlayers()
+					+ (game.getNumberOfPlayers() == 1 ? " player" : " players")
+					+ " in the game. You can give a player points, add another player,"
+					+ " reset all players or exit. Which would you like?";
+			repromptText = MeineVertraegeTextUtil.COMPLETE_HELP;
+		} else {
+			speechText = "ScoreKeeper, What can I do for you?";
+			repromptText = MeineVertraegeTextUtil.NEXT_HELP;
+		}
 
-    /**
-     * Creates and returns response for the new game intent.
-     *
-     * @param session
-     *            {@link Session} for the request
-     * @param skillContext
-     *            {@link SkillContext} for this request
-     * @return response for the new game intent.
-     */
-    public SpeechletResponse getNewGameIntentResponse(Session session, SkillContext skillContext) {
-        ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
+		return getAskSpeechletResponse(speechText, repromptText);
+	}
 
-        if (game == null) {
-            return getAskSpeechletResponse("New game started. Who's your first player?",
-                    "Please tell me who\'s your first player?");
-        }
+	public SpeechletResponse getAlleVertraegeResponse(Session session, SkillContext skillContext) {
+		return null;
+	}
 
-        // Reset current game
-        game.resetScores();
-        scoreKeeperDao.saveScoreKeeperGame(game);
+	public SpeechletResponse getVertraegeZuSparteResponse(Session session, SkillContext skillContext) {
+		return null;
+	}
 
-        String speechText =
-                "New game started with " + game.getNumberOfPlayers() + " existing player"
-                        + (game.getNumberOfPlayers() != 1 ? "" : "s") + ".";
+	public SpeechletResponse getVertragZuVSNRResponse(Session session, SkillContext skillContext) {
+		return null;
+	}
 
-        if (skillContext.needsMoreHelp()) {
-            String repromptText =
-                    "You can give a player points, add another player, reset all players or "
-                            + "exit. What would you like?";
-            speechText += repromptText;
-            return getAskSpeechletResponse(speechText, repromptText);
-        } else {
-            return getTellSpeechletResponse(speechText);
-        }
-    }
+	/**
+	 * Creates and returns response for the new game intent.
+	 *
+	 * @param session
+	 *            {@link Session} for the request
+	 * @param skillContext
+	 *            {@link SkillContext} for this request
+	 * @return response for the new game intent.
+	 */
+	public SpeechletResponse getNewGameIntentResponse(Session session, SkillContext skillContext) {
+		ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
 
-    /**
-     * Creates and returns response for the add player intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            Speechlet {@link Session} for this request
-     * @param skillContext
-     * @return response for the add player intent.
-     */
-    public SpeechletResponse getAddPlayerIntentResponse(Intent intent, Session session,
-            SkillContext skillContext) {
-        // add a player to the current game,
-        // terminate or continue the conversation based on whether the intent
-        // is from a one shot command or not.
-        String newPlayerName =
-                MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
-        if (newPlayerName == null) {
-            String speechText = "OK. Who do you want to add?";
-            return getAskSpeechletResponse(speechText, speechText);
-        }
+		if (game == null) {
+			return getAskSpeechletResponse("New game started. Who's your first player?",
+					"Please tell me who\'s your first player?");
+		}
 
-        // Load the previous game
-        ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
-        if (game == null) {
-            game = ScoreKeeperGame.newInstance(session, ScoreKeeperGameData.newInstance());
-        }
+		// Reset current game
+		game.resetScores();
+		scoreKeeperDao.saveScoreKeeperGame(game);
 
-        game.addPlayer(newPlayerName);
+		String speechText = "New game started with " + game.getNumberOfPlayers() + " existing player"
+				+ (game.getNumberOfPlayers() != 1 ? "" : "s") + ".";
 
-        // Save the updated game
-        scoreKeeperDao.saveScoreKeeperGame(game);
+		if (skillContext.needsMoreHelp()) {
+			String repromptText = "You can give a player points, add another player, reset all players or "
+					+ "exit. What would you like?";
+			speechText += repromptText;
+			return getAskSpeechletResponse(speechText, repromptText);
+		} else {
+			return getTellSpeechletResponse(speechText);
+		}
+	}
 
-        String speechText = newPlayerName + " has joined your game. ";
-        String repromptText = null;
+	/**
+	 * Creates and returns response for the add player intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            Speechlet {@link Session} for this request
+	 * @param skillContext
+	 * @return response for the add player intent.
+	 */
+	public SpeechletResponse getAddPlayerIntentResponse(Intent intent, Session session,
+			SkillContext skillContext) {
+		// add a player to the current game,
+		// terminate or continue the conversation based on whether the intent
+		// is from a one shot command or not.
+		String newPlayerName = MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
+		if (newPlayerName == null) {
+			String speechText = "OK. Who do you want to add?";
+			return getAskSpeechletResponse(speechText, speechText);
+		}
 
-        if (skillContext.needsMoreHelp()) {
-            if (game.getNumberOfPlayers() == 1) {
-                speechText += "You can say, I am done adding players. Now who's your next player?";
+		// Load the previous game
+		ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
+		if (game == null) {
+			game = ScoreKeeperGame.newInstance(session, ScoreKeeperGameData.newInstance());
+		}
 
-            } else {
-                speechText += "Who is your next player?";
-            }
-            repromptText = MeineVertraegeTextUtil.NEXT_HELP;
-        }
+		game.addPlayer(newPlayerName);
 
-        if (repromptText != null) {
-            return getAskSpeechletResponse(speechText, repromptText);
-        } else {
-            return getTellSpeechletResponse(speechText);
-        }
-    }
+		// Save the updated game
+		scoreKeeperDao.saveScoreKeeperGame(game);
 
-    /**
-     * Creates and returns response for the add score intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            {@link Session} for this request
-     * @param skillContext
-     *            {@link SkillContext} for this request
-     * @return response for the add score intent
-     */
-    public SpeechletResponse getAddScoreIntentResponse(Intent intent, Session session,
-            SkillContext skillContext) {
-        String playerName =
-                MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
-        if (playerName == null) {
-            String speechText = "Sorry, I did not hear the player name. Please say again?";
-            return getAskSpeechletResponse(speechText, speechText);
-        }
+		String speechText = newPlayerName + " has joined your game. ";
+		String repromptText = null;
 
-        int score = 0;
-        try {
-            score = Integer.parseInt(intent.getSlot(SLOT_SCORE_NUMBER).getValue());
-        } catch (NumberFormatException e) {
-            String speechText = "Sorry, I did not hear the points. Please say again?";
-            return getAskSpeechletResponse(speechText, speechText);
-        }
+		if (skillContext.needsMoreHelp()) {
+			if (game.getNumberOfPlayers() == 1) {
+				speechText += "You can say, I am done adding players. Now who's your next player?";
 
-        ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
-        if (game == null) {
-            return getTellSpeechletResponse("A game has not been started. Please say New Game to "
-                    + "start a new game before adding scores.");
-        }
+			} else {
+				speechText += "Who is your next player?";
+			}
+			repromptText = MeineVertraegeTextUtil.NEXT_HELP;
+		}
 
-        if (game.getNumberOfPlayers() == 0) {
-            String speechText = "Sorry, no player has joined the game yet. What can I do for you?";
-            return getAskSpeechletResponse(speechText, speechText);
-        }
+		if (repromptText != null) {
+			return getAskSpeechletResponse(speechText, repromptText);
+		} else {
+			return getTellSpeechletResponse(speechText);
+		}
+	}
 
-        // Update score
-        if (!game.addScoreForPlayer(playerName, score)) {
-            String speechText = "Sorry, " + playerName + " has not joined the game. What else?";
-            return getAskSpeechletResponse(speechText, speechText);
-        }
+	/**
+	 * Creates and returns response for the add score intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            {@link Session} for this request
+	 * @param skillContext
+	 *            {@link SkillContext} for this request
+	 * @return response for the add score intent
+	 */
+	public SpeechletResponse getAddScoreIntentResponse(Intent intent, Session session,
+			SkillContext skillContext) {
+		String playerName = MeineVertraegeTextUtil.getPlayerName(intent.getSlot(SLOT_PLAYER_NAME).getValue());
+		if (playerName == null) {
+			String speechText = "Sorry, I did not hear the player name. Please say again?";
+			return getAskSpeechletResponse(speechText, speechText);
+		}
 
-        // Save game
-        scoreKeeperDao.saveScoreKeeperGame(game);
+		int score = 0;
+		try {
+			score = Integer.parseInt(intent.getSlot(SLOT_SCORE_NUMBER).getValue());
+		} catch (NumberFormatException e) {
+			String speechText = "Sorry, I did not hear the points. Please say again?";
+			return getAskSpeechletResponse(speechText, speechText);
+		}
 
-        // Prepare speech text. If the game has less than 3 players, skip reading scores for each
-        // player for brevity.
-        String speechText = score + " for " + playerName + ". ";
-        if (game.getNumberOfPlayers() > MAX_PLAYERS_FOR_SPEECH) {
-            speechText += playerName + " has " + game.getScoreForPlayer(playerName) + " in total.";
-        } else {
-            speechText += getAllScoresAsSpeechText(game.getAllScoresInDescndingOrder());
-        }
+		ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
+		if (game == null) {
+			return getTellSpeechletResponse("A game has not been started. Please say New Game to "
+					+ "start a new game before adding scores.");
+		}
 
-        return getTellSpeechletResponse(speechText);
-    }
+		if (game.getNumberOfPlayers() == 0) {
+			String speechText = "Sorry, no player has joined the game yet. What can I do for you?";
+			return getAskSpeechletResponse(speechText, speechText);
+		}
 
-    /**
-     * Creates and returns response for the tell scores intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            {@link Session} for this request
-     * @return response for the tell scores intent
-     */
-    public SpeechletResponse getTellScoresIntentResponse(Intent intent, Session session) {
-        // tells the scores in the leaderboard and send the result in card.
-        ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
+		// Update score
+		if (!game.addScoreForPlayer(playerName, score)) {
+			String speechText = "Sorry, " + playerName + " has not joined the game. What else?";
+			return getAskSpeechletResponse(speechText, speechText);
+		}
 
-        if (game == null || !game.hasPlayers()) {
-            return getTellSpeechletResponse("Nobody has joined the game.");
-        }
+		// Save game
+		scoreKeeperDao.saveScoreKeeperGame(game);
 
-        SortedMap<String, Long> sortedScores = game.getAllScoresInDescndingOrder();
-        String speechText = getAllScoresAsSpeechText(sortedScores);
-        Card leaderboardScoreCard = getLeaderboardScoreCard(sortedScores);
+		// Prepare speech text. If the game has less than 3 players, skip
+		// reading scores for each
+		// player for brevity.
+		String speechText = score + " for " + playerName + ". ";
+		if (game.getNumberOfPlayers() > MAX_PLAYERS_FOR_SPEECH) {
+			speechText += playerName + " has " + game.getScoreForPlayer(playerName) + " in total.";
+		} else {
+			speechText += getAllScoresAsSpeechText(game.getAllScoresInDescndingOrder());
+		}
 
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+		return getTellSpeechletResponse(speechText);
+	}
 
-        return SpeechletResponse.newTellResponse(speech, leaderboardScoreCard);
-    }
+	/**
+	 * Creates and returns response for the tell scores intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            {@link Session} for this request
+	 * @return response for the tell scores intent
+	 */
+	public SpeechletResponse getTellScoresIntentResponse(Intent intent, Session session) {
+		// tells the scores in the leaderboard and send the result in card.
+		ScoreKeeperGame game = scoreKeeperDao.getScoreKeeperGame(session);
 
-    /**
-     * Creates and returns response for the reset players intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            {@link Session} for this request
-     * @return response for the reset players intent
-     */
-    public SpeechletResponse getResetPlayersIntentResponse(Intent intent, Session session) {
-        // Remove all players
-        ScoreKeeperGame game =
-                ScoreKeeperGame.newInstance(session, ScoreKeeperGameData.newInstance());
-        scoreKeeperDao.saveScoreKeeperGame(game);
+		if (game == null || !game.hasPlayers()) {
+			return getTellSpeechletResponse("Nobody has joined the game.");
+		}
 
-        String speechText = "New game started without players. Who do you want to add first?";
-        return getAskSpeechletResponse(speechText, speechText);
-    }
+		SortedMap<String, Long> sortedScores = game.getAllScoresInDescndingOrder();
+		String speechText = getAllScoresAsSpeechText(sortedScores);
+		Card leaderboardScoreCard = getLeaderboardScoreCard(sortedScores);
 
-    /**
-     * Creates and returns response for the help intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            {@link Session} for this request
-     * @param skillContext
-     *            {@link SkillContext} for this request
-     * @return response for the help intent
-     */
-    public SpeechletResponse getHelpIntentResponse(Intent intent, Session session,
-            SkillContext skillContext) {
-        return skillContext.needsMoreHelp() ? getAskSpeechletResponse(
-                MeineVertraegeTextUtil.COMPLETE_HELP + " So, how can I help?",
-                MeineVertraegeTextUtil.NEXT_HELP)
-                : getTellSpeechletResponse(MeineVertraegeTextUtil.COMPLETE_HELP);
-    }
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		speech.setText(speechText);
 
-    /**
-     * Creates and returns response for the exit intent.
-     *
-     * @param intent
-     *            {@link Intent} for this request
-     * @param session
-     *            {@link Session} for this request
-     * @param skillContext
-     *            {@link SkillContext} for this request
-     * @return response for the exit intent
-     */
-    public SpeechletResponse getExitIntentResponse(Intent intent, Session session,
-            SkillContext skillContext) {
-        return skillContext.needsMoreHelp() ? getTellSpeechletResponse("Okay. Whenever you're "
-                + "ready, you can start giving points to the players in your game.")
-                : getTellSpeechletResponse("");
-    }
+		return SpeechletResponse.newTellResponse(speech, leaderboardScoreCard);
+	}
 
-    /**
-     * Returns an ask Speechlet response for a speech and reprompt text.
-     *
-     * @param speechText
-     *            Text for speech output
-     * @param repromptText
-     *            Text for reprompt output
-     * @return ask Speechlet response for a speech and reprompt text
-     */
-    private SpeechletResponse getAskSpeechletResponse(String speechText, String repromptText) {
-        // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Session");
-        card.setContent(speechText);
+	/**
+	 * Creates and returns response for the reset players intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            {@link Session} for this request
+	 * @return response for the reset players intent
+	 */
+	public SpeechletResponse getResetPlayersIntentResponse(Intent intent, Session session) {
+		// Remove all players
+		ScoreKeeperGame game = ScoreKeeperGame.newInstance(session, ScoreKeeperGameData.newInstance());
+		scoreKeeperDao.saveScoreKeeperGame(game);
 
-        // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+		String speechText = "New game started without players. Who do you want to add first?";
+		return getAskSpeechletResponse(speechText, speechText);
+	}
 
-        // Create reprompt
-        PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-        repromptSpeech.setText(repromptText);
-        Reprompt reprompt = new Reprompt();
-        reprompt.setOutputSpeech(repromptSpeech);
+	/**
+	 * Creates and returns response for the help intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            {@link Session} for this request
+	 * @param skillContext
+	 *            {@link SkillContext} for this request
+	 * @return response for the help intent
+	 */
+	public SpeechletResponse getHelpIntentResponse(Intent intent, Session session,
+			SkillContext skillContext) {
+		return skillContext.needsMoreHelp() ? getAskSpeechletResponse(
+				MeineVertraegeTextUtil.COMPLETE_HELP + " So, how can I help?",
+				MeineVertraegeTextUtil.NEXT_HELP)
+				: getTellSpeechletResponse(MeineVertraegeTextUtil.COMPLETE_HELP);
+	}
 
-        return SpeechletResponse.newAskResponse(speech, reprompt, card);
-    }
+	/**
+	 * Creates and returns response for the exit intent.
+	 *
+	 * @param intent
+	 *            {@link Intent} for this request
+	 * @param session
+	 *            {@link Session} for this request
+	 * @param skillContext
+	 *            {@link SkillContext} for this request
+	 * @return response for the exit intent
+	 */
+	public SpeechletResponse getExitIntentResponse(Intent intent, Session session,
+			SkillContext skillContext) {
+		return skillContext.needsMoreHelp() ? getTellSpeechletResponse("Okay. Whenever you're "
+				+ "ready, you can start giving points to the players in your game.")
+				: getTellSpeechletResponse("");
+	}
 
-    /**
-     * Returns a tell Speechlet response for a speech and reprompt text.
-     *
-     * @param speechText
-     *            Text for speech output
-     * @return a tell Speechlet response for a speech and reprompt text
-     */
-    private SpeechletResponse getTellSpeechletResponse(String speechText) {
-        // Create the Simple card content.
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Session");
-        card.setContent(speechText);
+	/**
+	 * Returns an ask Speechlet response for a speech and reprompt text.
+	 *
+	 * @param speechText
+	 *            Text for speech output
+	 * @param repromptText
+	 *            Text for reprompt output
+	 * @return ask Speechlet response for a speech and reprompt text
+	 */
+	private SpeechletResponse getAskSpeechletResponse(String speechText, String repromptText) {
+		// Create the Simple card content.
+		SimpleCard card = new SimpleCard();
+		card.setTitle("Session");
+		card.setContent(speechText);
 
-        // Create the plain text output.
-        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(speechText);
+		// Create the plain text output.
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		speech.setText(speechText);
 
-        return SpeechletResponse.newTellResponse(speech, card);
-    }
+		// Create reprompt
+		PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
+		repromptSpeech.setText(repromptText);
+		Reprompt reprompt = new Reprompt();
+		reprompt.setOutputSpeech(repromptSpeech);
 
-    /**
-     * Converts a {@link Map} of scores into text for speech. The order of the entries in the text
-     * is determined by the order of entries in {@link Map#entrySet()}.
-     *
-     * @param scores
-     *            A {@link Map} of scores
-     * @return a speech ready text containing scores
-     */
-    private String getAllScoresAsSpeechText(Map<String, Long> scores) {
-        StringBuilder speechText = new StringBuilder();
-        int index = 0;
-        for (Entry<String, Long> entry : scores.entrySet()) {
-            if (scores.size() > 1 && index == scores.size() - 1) {
-                speechText.append(" and ");
-            }
-            String singularOrPluralPoints = entry.getValue() == 1 ? " point, " : " points, ";
-            speechText
-                    .append(entry.getKey())
-                    .append(" has ")
-                    .append(entry.getValue())
-                    .append(singularOrPluralPoints);
-            index++;
-        }
+		return SpeechletResponse.newAskResponse(speech, reprompt, card);
+	}
 
-        return speechText.toString();
-    }
+	/**
+	 * Returns a tell Speechlet response for a speech and reprompt text.
+	 *
+	 * @param speechText
+	 *            Text for speech output
+	 * @return a tell Speechlet response for a speech and reprompt text
+	 */
+	private SpeechletResponse getTellSpeechletResponse(String speechText) {
+		// Create the Simple card content.
+		SimpleCard card = new SimpleCard();
+		card.setTitle("Session");
+		card.setContent(speechText);
 
-    /**
-     * Creates and returns a {@link Card} with a formatted text containing all scores in the game.
-     * The order of the entries in the text is determined by the order of entries in
-     * {@link Map#entrySet()}.
-     *
-     * @param scores
-     *            A {@link Map} of scores
-     * @return leaderboard text containing all scores in the game
-     */
-    private Card getLeaderboardScoreCard(Map<String, Long> scores) {
-        StringBuilder leaderboard = new StringBuilder();
-        int index = 0;
-        for (Entry<String, Long> entry : scores.entrySet()) {
-            index++;
-            leaderboard
-                    .append("No. ")
-                    .append(index)
-                    .append(" - ")
-                    .append(entry.getKey())
-                    .append(" : ")
-                    .append(entry.getValue())
-                    .append("\n");
-        }
+		// Create the plain text output.
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		speech.setText(speechText);
 
-        SimpleCard card = new SimpleCard();
-        card.setTitle("Leaderboard");
-        card.setContent(leaderboard.toString());
-        return card;
-    }
+		return SpeechletResponse.newTellResponse(speech, card);
+	}
+
+	/**
+	 * Converts a {@link Map} of scores into text for speech. The order of the
+	 * entries in the text is determined by the order of entries in
+	 * {@link Map#entrySet()}.
+	 *
+	 * @param scores
+	 *            A {@link Map} of scores
+	 * @return a speech ready text containing scores
+	 */
+	private String getAllScoresAsSpeechText(Map<String, Long> scores) {
+		StringBuilder speechText = new StringBuilder();
+		int index = 0;
+		for (Entry<String, Long> entry : scores.entrySet()) {
+			if (scores.size() > 1 && index == scores.size() - 1) {
+				speechText.append(" and ");
+			}
+			String singularOrPluralPoints = entry.getValue() == 1 ? " point, " : " points, ";
+			speechText
+					.append(entry.getKey())
+					.append(" has ")
+					.append(entry.getValue())
+					.append(singularOrPluralPoints);
+			index++;
+		}
+
+		return speechText.toString();
+	}
+
+	/**
+	 * Creates and returns a {@link Card} with a formatted text containing all
+	 * scores in the game. The order of the entries in the text is determined by
+	 * the order of entries in {@link Map#entrySet()}.
+	 *
+	 * @param scores
+	 *            A {@link Map} of scores
+	 * @return leaderboard text containing all scores in the game
+	 */
+	private Card getLeaderboardScoreCard(Map<String, Long> scores) {
+		StringBuilder leaderboard = new StringBuilder();
+		int index = 0;
+		for (Entry<String, Long> entry : scores.entrySet()) {
+			index++;
+			leaderboard
+					.append("No. ")
+					.append(index)
+					.append(" - ")
+					.append(entry.getKey())
+					.append(" : ")
+					.append(entry.getValue())
+					.append("\n");
+		}
+
+		SimpleCard card = new SimpleCard();
+		card.setTitle("Leaderboard");
+		card.setContent(leaderboard.toString());
+		return card;
+	}
 }
