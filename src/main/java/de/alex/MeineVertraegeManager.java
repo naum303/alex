@@ -30,8 +30,8 @@ import de.alex.types.Sparte;
  */
 @Component
 public class MeineVertraegeManager {
-@Autowired
-private ResponseCardService cardService;
+	@Autowired
+	private ResponseCardService cardService;
 
 	@Autowired
 	private VertragRepository repository;
@@ -51,33 +51,41 @@ private ResponseCardService cardService;
 		String speechText = "";
 		String repromptText = "";
 
-
 		return getAskSpeechletResponse(speechText, repromptText);
 	}
 
 	public SpeechletResponse getAlleVertraegeResponse(Session session, SkillContext skillContext) {
 		List<Vertrag> vertraege = repository.getVertraege();
-		
+
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
 		builder.append("Du hast " + vertraege.size() + " Verträge.");
-		
-		
-		for(Sparte sparte : Sparte.values()) {
+
+		for (Sparte sparte : Sparte.values()) {
 			List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
-			if(vertraegeZurSparte.size() == 1) {
+			if (vertraegeZurSparte.size() == 1) {
 				builder.append(" Davon ist einer ein " + sparte.getSpeech() + " Vertrag.");
-			} else if(vertraegeZurSparte.size() > 1) {
+			} else if (vertraegeZurSparte.size() > 1) {
 				builder.append(" Davon sind " + vertraegeZurSparte.size() + " " + sparte.getSpeech() + " Verträge.");
 			}
 		}
-		
+
 		speech.setText(builder.toString());
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
 	public SpeechletResponse getVertraegeZuSparteResponse(Session session, SkillContext skillContext) {
-		return null;
+		String sparteString = (String) session.getAttribute("Sparte");
+		Sparte sparte = Sparte.valueOf(sparteString.toUpperCase());
+
+		List<Vertrag> vertraege = repository.getVertraegeZurSparte(sparte);
+
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Du hast " + vertraege.size() + " " + sparte.getSpeech() + (vertraege.size() > 1 ? " Verträge." : " Vertrag."));
+
+		speech.setText(builder.toString());
+		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
 	public SpeechletResponse getVertragZuVSNRResponse(Session session, SkillContext skillContext) {
