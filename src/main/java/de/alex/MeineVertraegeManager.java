@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.amazon.speech.slu.Intent;
+import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.LaunchRequest;
 import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SpeechletResponse;
@@ -58,38 +59,38 @@ public class MeineVertraegeManager {
 		return getAskSpeechletResponse(speechText, repromptText);
 	}
 
-	public SpeechletResponse getAlleVertraegeResponse(Intent intent,Session session, SkillContext skillContext) {
+	public SpeechletResponse getAlleVertraegeResponse(Intent intent, Session session, SkillContext skillContext) {
 		List<Vertrag> vertraege = repository.getVertraege();
 
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
 		builder.append("Du hast " + vertraege.size() + " Verträge.");
-		
+
 		Map<Sparte, Integer> anzahlVertraegeZuSparte = new HashMap<>();
-		
-		if(vertraege.size() > 0) {
-			for(Sparte sparte : Sparte.values()) {
+
+		if (vertraege.size() > 0) {
+			for (Sparte sparte : Sparte.values()) {
 				List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
-				if(vertraegeZurSparte.size() > 0) {
+				if (vertraegeZurSparte.size() > 0) {
 					anzahlVertraegeZuSparte.put(sparte, vertraegeZurSparte.size());
 				}
 			}
 		}
-		
-		if(anzahlVertraegeZuSparte.size() > 1) {
+
+		if (anzahlVertraegeZuSparte.size() > 1) {
 			List<String> aussagen = new ArrayList<>();
-			for(Entry<Sparte, Integer> entry : anzahlVertraegeZuSparte.entrySet()) {
-				if(entry.getValue() == 1) {
+			for (Entry<Sparte, Integer> entry : anzahlVertraegeZuSparte.entrySet()) {
+				if (entry.getValue() == 1) {
 					aussagen.add(" ein " + entry.getKey().getSpeech() + " Vertrag");
 				} else {
 					aussagen.add(entry.getValue() + " " + entry.getKey().getSpeech() + " Verträge");
 				}
 			}
-			if(aussagen.size() == 1) {
+			if (aussagen.size() == 1) {
 				builder.append(" Mach ich später.");
 			} else {
 				builder.append(" Davon sind ");
-				for(int i=0;i<aussagen.size()-1;i++) {
+				for (int i = 0; i < aussagen.size() - 1; i++) {
 					builder.append(aussagen.get(i));
 					builder.append(", ");
 				}
@@ -102,9 +103,9 @@ public class MeineVertraegeManager {
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
-	public SpeechletResponse getVertraegeZuSparteResponse(Intent intent,Session session, SkillContext skillContext) {
-		String sparteString = (String) session.getAttribute("Sparte");
-		Sparte sparte = Sparte.valueOf(sparteString.toUpperCase());
+	public SpeechletResponse getVertraegeZuSparteResponse(Intent intent, Session session, SkillContext skillContext) {
+		Slot sparteSlot = intent.getSlot("Sparte");
+		Sparte sparte = Sparte.valueOf(sparteSlot.getValue().toUpperCase());
 
 		List<Vertrag> vertraege = repository.getVertraegeZurSparte(sparte);
 
@@ -116,7 +117,7 @@ public class MeineVertraegeManager {
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
-	public SpeechletResponse getVertragZuVSNRResponse(Intent intent,Session session, SkillContext skillContext) {
+	public SpeechletResponse getVertragZuVSNRResponse(Intent intent, Session session, SkillContext skillContext) {
 		return null;
 	}
 
