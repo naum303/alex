@@ -1,6 +1,6 @@
 {
 	"intents": [{
-		"intent": "AlleVertraegeIntent",
+		"intent": "AlleVertraegeIntent"
 		},
 	{
 		"intent": "VertraegeZuSparteIntent",
@@ -13,7 +13,7 @@
 		"intent": "VertragZuVSNR",
 		"slots": [{
 			"name": "VSNR",
-			"type": "AMAZON.NUBMER"
+			"type": "AMAZON.NUMBER"
 		}]
 	}]
 }
