@@ -22,6 +22,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.677.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(35.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
+		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
 		vertrag.setSparte(Sparte.LEBEN);
@@ -29,6 +30,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.677.123");
 		vertrag.setBeitrag(BigDecimal.valueOf(12.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
+		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
 		vertrag.setSparte(Sparte.KRANKEN);
@@ -36,6 +38,7 @@ public class VertragRepository {
 		vertrag.setVsnr("79.116.975.12");
 		vertrag.setBeitrag(BigDecimal.valueOf(25.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
+		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
 		vertrag.setSparte(Sparte.WOHNGEBAEUDE);
@@ -43,6 +46,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.123.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(150.20));
 		vertrag.setZahlungsweise(Zahlungsweise.QUARTAL);
+		vertraege.add(vertrag);
 
 		vertrag = new Vertrag();
 		vertrag.setSparte(Sparte.HAUSRAT);
@@ -50,6 +54,7 @@ public class VertragRepository {
 		vertrag.setVsnr("3.380.321.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(89.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
+		vertraege.add(vertrag);
 	}
 
 	public Vertrag getVertrag(Long vsnr) {
