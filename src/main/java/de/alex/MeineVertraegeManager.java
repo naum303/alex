@@ -80,10 +80,10 @@ public class MeineVertraegeManager {
 		}
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		int euro = (int) summe.doubleValue();
-		int cent = (int) (summe.doubleValue()*10);
-		cent -= euro*10;
+		int cent = (int) (summe.doubleValue() * 10);
+		cent -= euro * 10;
 		speech.setText("Du musst dieses Jahr insgesamt " + euro + " Euro und " + cent + " Cent für deine Versicherungen bezahlen.");
-		
+
 		return SpeechletResponse.newTellResponse(speech);
 	}
 
@@ -155,8 +155,15 @@ public class MeineVertraegeManager {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("Zu der VSNR ").append(vsnr).append(" gehört ein ").append(vertrag.getSparte().getSpeech())
-				.append("-Vertrag.");
+		builder.append("Zu der VSNR ")
+				.append(vsnr)
+				.append(" gehört ein ")
+				.append(vertrag.getSparte().getSpeech())
+				.append("-Vertrag mit einem Beitrag von ")
+				.append(vertrag.getBeitrag())
+				.append(" bei ")
+				.append(vertrag.getZahlungsweise().getSpeech())
+				.append("er Zahlungsweise.");
 
 		speech.setText(builder.toString());
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardByVertrag(vertrag));
