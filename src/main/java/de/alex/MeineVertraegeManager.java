@@ -118,7 +118,22 @@ public class MeineVertraegeManager {
 	}
 
 	public SpeechletResponse getVertragZuVSNRResponse(Intent intent, Session session, SkillContext skillContext) {
-		return null;
+		Slot vsnrSlot = intent.getSlot("VSNR");
+		long vsnr = Long.valueOf(vsnrSlot.getValue());
+
+		Vertrag vertrag = repository.getVertrag(vsnr);
+
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("Zu der VSNR ")
+				.append(vsnr)
+				.append(" gehört ein ")
+				.append(vertrag.getSparte().getSpeech())
+				.append("-Vertrag.");
+
+		speech.setText(builder.toString());
+		return SpeechletResponse.newTellResponse(speech, cardService.getCardByVertrag(vertrag));
 	}
 
 	/**
