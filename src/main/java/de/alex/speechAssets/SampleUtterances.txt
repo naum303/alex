@@ -13,6 +13,10 @@ AlleVertraegeIntent welche Vertraege
 AlleVertraegeIntent welche Vertraege findest du
 AlleVertraegeIntent welche Vertraege gibt es
 AlleVertraegeIntent nenne alle Vertraege
+AlleVertraegeIntent allen Verträgen
+AlleVertraegeIntent allen meinen Verträgen
+AlleVertraegeIntent Verträgen
+AlleVertraegeIntent Vertrag
 
 VertraegeZuSparteIntent alle Vertraege zur Sparte {Sparte}
 VertraegeZuSparteIntent alle {Sparte} Vertraege
@@ -24,6 +28,8 @@ VertraegeZuSparteIntent nenne {Sparte} Versicherungen
 VertraegeZuSparteIntent nenne meine {Sparte} Versicherungen
 VertraegeZuSparteIntent nenne alle {Sparte} Vertraege
 VertraegeZuSparteIntent nenne meine {Sparte} Vertraege
+VertraegeZuSparteIntent allen {Sparte} Verträgen
+VertraegeZuSparteIntent allen {Sparte} Verträgen
 
 VertragZuVSNR Vertrag zur VSNR {VSNR}
 VertragZuVSNR Vertragsnummer {VSNR}
