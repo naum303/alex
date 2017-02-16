@@ -65,7 +65,7 @@ public class MeineVertraegeManager {
 		for(Sparte sparte : Sparte.values()) {
 			List<Vertrag> vertraegeZurSparte = repository.getVertraegeZurSparte(sparte);
 			if(vertraegeZurSparte.size() == 1) {
-				builder.append(" Davon ist einer ein " + sparte.getSpeech() + " Verträge.");
+				builder.append(" Davon ist einer ein " + sparte.getSpeech() + " Vertrag.");
 			} else if(vertraegeZurSparte.size() > 1) {
 				builder.append(" Davon sind " + vertraegeZurSparte.size() + " " + sparte.getSpeech() + " Verträge.");
 			}
