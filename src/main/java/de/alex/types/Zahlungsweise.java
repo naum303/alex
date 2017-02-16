@@ -1,4 +1,4 @@
-package de.alex;
+package de.alex.types;
 
 public enum Zahlungsweise {
 	MONATLICH,

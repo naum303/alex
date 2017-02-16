@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import de.alex.types.Sparte;
+import de.alex.types.Zahlungsweise;
+
 @Component
 public class VertragRepository {
 	
@@ -13,35 +16,35 @@ public class VertragRepository {
 	
 	public VertragRepository() {
 		Vertrag vertrag = new Vertrag();
-		vertrag.setSparte("Leben");
+		vertrag.setSparte(Sparte.LEBEN);
 		vertrag.setVersichertesObjekt("Berufsunfähigkeitsversicherung");
 		vertrag.setVsnr("3.380.677.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(35.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
 		
 		vertrag = new Vertrag();
-		vertrag.setSparte("Leben");
+		vertrag.setSparte(Sparte.LEBEN);
 		vertrag.setVersichertesObjekt("Risiko-Leben");
 		vertrag.setVsnr("3.380.677.123");
 		vertrag.setBeitrag(BigDecimal.valueOf(12.20));
 		vertrag.setZahlungsweise(Zahlungsweise.MONATLICH);
 		
 		vertrag = new Vertrag();
-		vertrag.setSparte("Kranken");
+		vertrag.setSparte(Sparte.KRANKEN);
 		vertrag.setVersichertesObjekt("Auslandsreise-Krankenversicherung");
 		vertrag.setVsnr("79.116.975.12");
 		vertrag.setBeitrag(BigDecimal.valueOf(25.20));
 		vertrag.setZahlungsweise(Zahlungsweise.JAEHRLICH);
 		
 		vertrag = new Vertrag();
-		vertrag.setSparte("Sach");
+		vertrag.setSparte(Sparte.WOHNGEBAEUDE);
 		vertrag.setVersichertesObjekt("Wohngebäude");
 		vertrag.setVsnr("3.380.123.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(150.20));
 		vertrag.setZahlungsweise(Zahlungsweise.QUARTAL);
 		
 		vertrag = new Vertrag();
-		vertrag.setSparte("Sach");
+		vertrag.setSparte(Sparte.HAUSRAT);
 		vertrag.setVersichertesObjekt("Hausrat");
 		vertrag.setVsnr("3.380.321.172");
 		vertrag.setBeitrag(BigDecimal.valueOf(89.20));

@@ -2,8 +2,11 @@ package de.alex;
 
 import java.math.BigDecimal;
 
+import de.alex.types.Sparte;
+import de.alex.types.Zahlungsweise;
+
 public class Vertrag {
-	private String sparte;
+	private Sparte sparte;
 	private String versichertesObjekt;
 	private BigDecimal beitrag;
 	private String vsnr;
@@ -15,10 +18,10 @@ public class Vertrag {
 	public void setZahlungsweise(Zahlungsweise zahlungsweise) {
 		this.zahlungsweise = zahlungsweise;
 	}
-	public String getSparte() {
+	public Sparte getSparte() {
 		return sparte;
 	}
-	public void setSparte(String sparte) {
+	public void setSparte(Sparte sparte) {
 		this.sparte = sparte;
 	}
 	public String getVersichertesObjekt() {
