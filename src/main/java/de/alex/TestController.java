@@ -4,29 +4,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.alex.storage.ScoreKeeperGameData;
 import de.alex.storage.ScoreKeeperRepository;
 import de.alex.storage.ScoreKeeperUserDataItem;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-public class AlexApplicationTests {
+@RestController
+public class TestController {
 
-	@Autowired
-    private TestEntityManager entityManager;
-	
 	@Autowired
 	private ScoreKeeperRepository repository;
 	
-	@Test
-	public void testExample() {
+	@RequestMapping(path="/save")
+	public String testSave() {
 		ScoreKeeperGameData gameData = new ScoreKeeperGameData();
 		gameData.setPlayers(Arrays.asList("Peter", "Petra", "Hans"));
 		Map<String, Long> scores = new HashMap<>();
@@ -38,11 +31,12 @@ public class AlexApplicationTests {
 		ScoreKeeperUserDataItem dataItem = new ScoreKeeperUserDataItem();
 		dataItem.setGameData(gameData);
 		dataItem.setCustomerId("customerId");
-		
-		this.repository.save(dataItem);
-		ScoreKeeperUserDataItem findOne = this.repository.findOne("customerId");
-		System.out.println(dataItem);
-		System.out.println(findOne);
+		repository.save(dataItem);
+		return "works";
 	}
-
+	
+	@RequestMapping(path="/read")
+	public ScoreKeeperUserDataItem testRead() {
+		return repository.findOne("customerId");
+	}
 }

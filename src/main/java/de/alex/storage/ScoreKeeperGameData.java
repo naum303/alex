@@ -15,51 +15,47 @@ import javax.persistence.Id;
  */
 @Entity
 public class ScoreKeeperGameData {
-	
+
 	@Id
 	@GeneratedValue
-	private long id; 
-	
-		@ElementCollection
-    private List<String> players;
-		@ElementCollection
-    private Map<String, Long> scores;
+	private long id;
 
-    public ScoreKeeperGameData() {
-        // public no-arg constructor required for DynamoDBMapper marshalling
-    }
+	@ElementCollection
+	private List<String> players;
+	@ElementCollection
+	private Map<String, Long> scores;
 
-    /**
-     * Creates a new instance of {@link ScoreKeeperGameData} with initialized but empty player and
-     * score information.
-     * 
-     * @return
-     */
-    public static ScoreKeeperGameData newInstance() {
-        ScoreKeeperGameData newInstance = new ScoreKeeperGameData();
-        newInstance.setPlayers(new ArrayList<String>());
-        newInstance.setScores(new HashMap<String, Long>());
-        return newInstance;
-    }
+	/**
+	 * Creates a new instance of {@link ScoreKeeperGameData} with initialized
+	 * but empty player and score information.
+	 * 
+	 * @return
+	 */
+	public static ScoreKeeperGameData newInstance() {
+		ScoreKeeperGameData newInstance = new ScoreKeeperGameData();
+		newInstance.setPlayers(new ArrayList<String>());
+		newInstance.setScores(new HashMap<String, Long>());
+		return newInstance;
+	}
 
-    public List<String> getPlayers() {
-        return players;
-    }
+	public List<String> getPlayers() {
+		return players;
+	}
 
-    public void setPlayers(List<String> players) {
-        this.players = players;
-    }
+	public void setPlayers(List<String> players) {
+		this.players = players;
+	}
 
-    public Map<String, Long> getScores() {
-        return scores;
-    }
+	public Map<String, Long> getScores() {
+		return scores;
+	}
 
-    public void setScores(Map<String, Long> scores) {
-        this.scores = scores;
-    }
+	public void setScores(Map<String, Long> scores) {
+		this.scores = scores;
+	}
 
-    @Override
-    public String toString() {
-        return "[ScoreKeeperGameData players: " + players + "] scores: " + scores + "]";
-    }
+	@Override
+	public String toString() {
+		return "[ScoreKeeperGameData players: " + players + "] scores: " + scores + "]";
+	}
 }

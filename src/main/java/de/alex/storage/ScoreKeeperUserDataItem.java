@@ -32,4 +32,9 @@ public class ScoreKeeperUserDataItem {
     public void setGameData(ScoreKeeperGameData gameData) {
         this.gameData = gameData;
     }
+
+	@Override
+	public String toString() {
+		return "ScoreKeeperUserDataItem [customerId=" + customerId + ", gameData=" + gameData + "]";
+	}
 }
