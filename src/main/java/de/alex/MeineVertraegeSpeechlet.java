@@ -114,13 +114,13 @@ public class MeineVertraegeSpeechlet implements Speechlet {
 		Intent intent = request.getIntent();
 
 		if ("AlleVertraegeIntent".equals(intent.getName())) {
-			return meineVertraegeManager.getAlleVertraegeResponse(session, skillContext);
+			return meineVertraegeManager.getAlleVertraegeResponse(intent, session, skillContext);
 
 		} else if ("VertraegeZuSparteIntent".equals(intent.getName())) {
-			return meineVertraegeManager.getVertraegeZuSparteResponse(session, skillContext);
+			return meineVertraegeManager.getVertraegeZuSparteResponse(intent, session, skillContext);
 
 		} else if ("VertragZuVSNR".equals(intent.getName())) {
-			return meineVertraegeManager.getVertragZuVSNRResponse(session, skillContext);
+			return meineVertraegeManager.getVertragZuVSNRResponse(intent, session, skillContext);
 
 		} else if ("AMAZON.HelpIntent".equals(intent.getName())) {
 			return meineVertraegeManager.getHelpIntentResponse(intent, session, skillContext);

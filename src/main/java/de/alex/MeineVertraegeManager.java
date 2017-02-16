@@ -58,7 +58,7 @@ public class MeineVertraegeManager {
 		return getAskSpeechletResponse(speechText, repromptText);
 	}
 
-	public SpeechletResponse getAlleVertraegeResponse(Session session, SkillContext skillContext) {
+	public SpeechletResponse getAlleVertraegeResponse(Intent intent,Session session, SkillContext skillContext) {
 		List<Vertrag> vertraege = repository.getVertraege();
 
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
@@ -102,7 +102,7 @@ public class MeineVertraegeManager {
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
-	public SpeechletResponse getVertraegeZuSparteResponse(Session session, SkillContext skillContext) {
+	public SpeechletResponse getVertraegeZuSparteResponse(Intent intent,Session session, SkillContext skillContext) {
 		String sparteString = (String) session.getAttribute("Sparte");
 		Sparte sparte = Sparte.valueOf(sparteString.toUpperCase());
 
@@ -116,7 +116,7 @@ public class MeineVertraegeManager {
 		return SpeechletResponse.newTellResponse(speech, cardService.getCardbyListe(vertraege));
 	}
 
-	public SpeechletResponse getVertragZuVSNRResponse(Session session, SkillContext skillContext) {
+	public SpeechletResponse getVertragZuVSNRResponse(Intent intent,Session session, SkillContext skillContext) {
 		return null;
 	}
 
