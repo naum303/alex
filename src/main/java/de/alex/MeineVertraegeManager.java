@@ -88,8 +88,8 @@ public class MeineVertraegeManager {
 			if(aussagen.size() == 1) {
 				builder.append(" Mach ich später.");
 			} else {
+				builder.append(" Davon sind ");
 				for(int i=0;i<aussagen.size()-1;i++) {
-					builder.append(" Davon sind ");
 					builder.append(aussagen.get(i));
 					builder.append(", ");
 				}
