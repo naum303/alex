@@ -58,9 +58,7 @@ public class MeineVertraegeManager {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		speech.setText("Du hast " + vertraege.size() + " Vertraege.");
 		
-		SpeechletResponse.newTellResponse(speech);
-		
-		return null;
+		return SpeechletResponse.newTellResponse(speech);
 	}
 
 	public SpeechletResponse getVertraegeZuSparteResponse(Session session, SkillContext skillContext) {
